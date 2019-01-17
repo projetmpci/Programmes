@@ -24,7 +24,7 @@ def affiche_tableau(lst):
 
 def remplace(colonne,ligne,coeff,lst):
     if lst == 0 :
-        lst = [[0] * colonne for i in range(ligne)]
+        lst = [[0] * ligne for i in range(colonne)]
     if coeff<0  and coeff>(-1):
         n=0
         y=0
