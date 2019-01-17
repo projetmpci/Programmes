@@ -6,7 +6,7 @@
 from math import *
 
 def matrice(colonne,ligne):
-    lst = [[0] * colonne for i in range(ligne)]
+    lst = [[0] * ligne for i in range(colonne)]
     return lst
 
 def affiche_tableau(lst):
