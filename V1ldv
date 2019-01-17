@@ -1,0 +1,82 @@
+#PROBLEME : NE PART PAS D'UN PIXEL DONNÉ (et ne traite pas tous les cas de figure mais soit)
+#distance de vision max : non traitée
+#matrices avec des murs : non traitées
+
+#couleurs (derrière le premier \033[):
+# 30: couleur noire
+# 31: couleur rouge
+# 32: couleur vert
+# 33: couleur orange
+# 34: couleur bleu
+# 35: couleur violet
+# 36: couleur turquoise
+# 37: couleur blanc
+
+def affiche_tableau(lst):
+    for i in lst:
+        for j in i:
+            if j==1:
+                print("\033[31m1\033[0m","",end="")
+            else :
+                print("\033[30m0\033[0m", "", end="")
+        print()
+
+
+def remplace(colonne,ligne,coeff,lst):
+    if lst == 0 :
+        lst = [[0] * colonne for i in range(ligne)]
+    if coeff<0  and coeff>(-1):
+        n=0
+        y=0
+        for j in range (min(ligne,colonne)) :
+            y=y+coeff
+            lst[n][j]=1
+            if y<=(-1):
+                n=n+1
+                lst[n][j]=1
+                y=y+1
+        return lst
+    if coeff>=0 and coeff<1:
+        n=colonne-1
+        y=0
+        for j in range (min(ligne,colonne)) :
+            y = y+coeff
+            lst[n][j] = 1
+            if y >= (1) :
+                n = n-1
+                lst[n][j] = 1
+                y = y - 1
+        return lst
+    if coeff < (-1) :
+        n = 0
+        y = 0
+        for j in range(min(ligne,colonne)) :
+            y = y + (1 / coeff)
+            lst[j][n] = 1
+            if y <= (-1):
+                n = n + 1
+                lst[j][n] = 1
+                y = y + 1
+        return lst
+    if coeff > 1 :
+        n = 0
+        y = 0
+        for j in range (min(ligne,colonne)) :
+            y = y + (1 / coeff)
+            lst[colonne-1-j][n] = 1
+            if y >= 1:
+                n = n + 1
+                lst[colonne-1-j][n] = 1
+                y = y - 1
+        return lst
+
+
+M1=remplace(50,50,-0.2,0)
+M2=remplace(50,50,-4,M1)
+M3=remplace(50,50,-1.2,M2)
+M4=remplace(50,50,-0.62,M3)
+print(affiche_tableau(M4))
+
+
+
+
