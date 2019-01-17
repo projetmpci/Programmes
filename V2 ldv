@@ -1,5 +1,7 @@
 #PROBLEME : NE TRAITE QUE LES MATRICES CARREES
 #(provient d'un problèmre d'indice en fonction de qui est plus grand (solution : fonction min?))
+#PROBLEME2 : NE CODE PAS PLUS DE 30 DROITES
+#(indice out of range, pourquoi?)
 #distance de vision max : non traitée
 #matrices avec des murs : non traitées
 
