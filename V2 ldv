@@ -1,0 +1,142 @@
+#PROBLEME : NE TRAITE QUE LES MATRICES CARREES
+#(provient d'un problèmre d'indice en fonction de qui est plus grand (solution : fonction min?))
+#distance de vision max : non traitée
+#matrices avec des murs : non traitées
+
+from math import *
+
+def matrice(colonne,ligne):
+    lst = [[0] * colonne for i in range(ligne)]
+    return lst
+
+def affiche_tableau(lst):
+    for i in lst:
+        for j in i:
+            if j==1:
+                print("\033[31m1\033[0m","",end="")
+            elif j=='@':
+                print("\033[32m@\033[0m", "", end="")
+            else :
+                print("\033[30m0\033[0m", "", end="")
+        print()
+
+def remplace(coeff,lst):
+
+    colonne=len(lst)
+    ligne=len(lst[1])
+    positionx=floor(ligne/2)
+    positiony=floor(colonne/2)
+    minimum=min(colonne,ligne)
+
+    if coeff<0  and coeff>(-1):
+        n = positiony
+        n2 = n
+        y = 0
+        y2 = y
+        for j in range (ligne - positionx+1) :
+            y = y + coeff
+            lst[n][j+positionx-1]=1
+            if y<=(-1):
+                n=n+1
+                lst[n][j+positionx-1]=1
+                y=y+1
+        for j in range (ligne - positionx+2) :
+            y2 = y2 - coeff
+            lst[colonne-n2][ligne-(j+positionx-1)]=1
+            if y2>=(1):
+                n2=n2+1
+                lst[colonne-n2][ligne-(j+positionx-1)]=1
+                y2=y2-1
+
+    if coeff >= 0 and coeff < 1 :
+        n = colonne - positiony
+        n2 = n
+        y = 0
+        y2 = y
+        for j in range (ligne - positionx+1) :
+            y = y + coeff
+            lst[n][j+positionx-1] = 1
+            if y >= (1) :
+                n = n-1
+                lst[n][j+positionx-1] = 1
+                y = y - 1
+        for j in range (ligne - positionx+2) :
+            y2 = y2 - coeff
+            lst[colonne - n2][ligne-(j+positionx-1)] = 1
+            if y2 <= (-1) :
+                n2 = n2-1
+                lst[colonne-n2][ligne-(j+positionx-1)] = 1
+                y2 = y2 + 1
+
+    if coeff < (-1) :
+        n = positionx
+        n2 = n
+        y = 0
+        y2 = y
+        for j in range(ligne-positionx+1) :
+            y = y + (1 / coeff)
+            lst[j+positiony-1][n] = 1
+            if y <= (-1):
+                n = n + 1
+                lst[j+positiony-1][n] = 1
+                y = y + 1
+        for j in range(ligne-positionx+2) :
+            y2 = y2 - (1 / coeff)
+            lst[ligne-(j+positiony-1)][colonne-n2] = 1
+            if y2 >= (1):
+                n2 = n2 + 1
+                lst[ligne-(j+positiony-1)][colonne-n2] = 1
+                y2 = y2 - 1
+
+    if coeff > 1 :
+        n = colonne - positionx
+        n2=n
+        y = 0
+        y2=y
+        for j in range (ligne-positionx+1) :
+            y = y + (1 / coeff)
+            lst[j+positiony-1][n] = 1
+            if y >= 1:
+                n = n - 1
+                lst[j+positiony-1][n] = 1
+                y = y - 1
+        for j in range (ligne-positionx+2) :
+            y2 = y2 - (1 / coeff)
+            lst[ligne-(j+positiony-1)][colonne-n2] = 1
+            if y2 <= (-1):
+                n2 = n2 - 1
+                lst[ligne-(j+positiony-1)][colonne-n2] = 1
+                y2 = y2 + 1
+    if coeff==-1:
+        y=positiony
+        x=positionx
+        for i in range(min(x,y)):
+            lst[y-i][x-i]=1
+        for i in range(min(x,y)):
+            lst[y+i][x+i]=1
+    if coeff==1:
+        y=positiony
+        x=positionx
+        for i in range(min(x,y)):
+            lst[y-i][x+i]=1
+        for i in range(min(x,y)):
+            lst[y+i][x-i]=1
+
+    lst[positiony][positionx]='@'
+    return lst
+
+def ligne_de_vue(lst,nb_de_droite):
+    for i in range (nb_de_droite):
+        lst=remplace(tan(0.01745*(90-i*(180/(nb_de_droite)))),lst)
+    return lst
+
+#print(affiche_tableau(remplace(-1,remplace(1,remplace(-4,remplace(0.2,remplace(-0.2,remplace(4,matrice(50,50)))))))))
+
+colonne=80
+ligne=80
+nb_de_droite=10
+
+M=matrice(colonne,ligne)
+L=ligne_de_vue(M,nb_de_droite)
+
+print(affiche_tableau(L))
