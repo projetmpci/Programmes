@@ -28,7 +28,7 @@ def remplace(coeff,lst):
     ligne=len(lst[1])
     positionx=floor(ligne/2)
     positiony=floor(colonne/2)
-    minimum=min(colonne,ligne)
+    #minimum=min(colonne,ligne)
 
     if coeff<0  and coeff>(-1):
         n = positiony
@@ -36,19 +36,21 @@ def remplace(coeff,lst):
         y = 0
         y2 = y
         for j in range (ligne - positionx+1) :
-            y = y + coeff
-            lst[n][j+positionx-1]=1
-            if y<=(-1):
-                n=n+1
+            if n<colonne :
+                y = y + coeff
                 lst[n][j+positionx-1]=1
-                y=y+1
+                if y<=(-1) :
+                    n=n+1
+                    lst[n][j+positionx-1]=1
+                    y=y+1
         for j in range (ligne - positionx+2) :
-            y2 = y2 - coeff
-            lst[colonne-n2][ligne-(j+positionx-1)]=1
-            if y2>=(1):
-                n2=n2+1
+            if n2<colonne :
+                y2 = y2 - coeff
                 lst[colonne-n2][ligne-(j+positionx-1)]=1
-                y2=y2-1
+                if y2>=(1):
+                    n2=n2+1
+                    lst[colonne-n2][ligne-(j+positionx-1)]=1
+                    y2=y2-1
 
     if coeff >= 0 and coeff < 1 :
         n = colonne - positiony
@@ -56,59 +58,65 @@ def remplace(coeff,lst):
         y = 0
         y2 = y
         for j in range (ligne - positionx+1) :
-            y = y + coeff
-            lst[n][j+positionx-1] = 1
-            if y >= (1) :
-                n = n-1
+            if n>0:
+                y = y + coeff
                 lst[n][j+positionx-1] = 1
-                y = y - 1
+                if y >= (1) :
+                    n = n-1
+                    lst[n][j+positionx-1] = 1
+                    y = y - 1
         for j in range (ligne - positionx+2) :
-            y2 = y2 - coeff
-            lst[colonne - n2][ligne-(j+positionx-1)] = 1
-            if y2 <= (-1) :
-                n2 = n2-1
-                lst[colonne-n2][ligne-(j+positionx-1)] = 1
-                y2 = y2 + 1
+            if n2>0:
+                y2 = y2 - coeff
+                lst[colonne - n2][ligne-(j+positionx-1)] = 1
+                if y2 <= (-1) :
+                    n2 = n2-1
+                    lst[colonne-n2][ligne-(j+positionx-1)] = 1
+                    y2 = y2 + 1
 
     if coeff < (-1) :
         n = positionx
         n2 = n
         y = 0
         y2 = y
-        for j in range(ligne-positionx+1) :
-            y = y + (1 / coeff)
-            lst[j+positiony-1][n] = 1
-            if y <= (-1):
-                n = n + 1
+        for j in range(colonne-positionx+1) :
+            if n<ligne :
+                y = y + (1 / coeff)
                 lst[j+positiony-1][n] = 1
-                y = y + 1
-        for j in range(ligne-positionx+2) :
-            y2 = y2 - (1 / coeff)
-            lst[ligne-(j+positiony-1)][colonne-n2] = 1
-            if y2 >= (1):
-                n2 = n2 + 1
-                lst[ligne-(j+positiony-1)][colonne-n2] = 1
-                y2 = y2 - 1
+                if y <= (-1):
+                    n = n + 1
+                    lst[j+positiony-1][n] = 1
+                    y = y + 1
+        for j in range(colonne-positionx+2) :
+            if n2<ligne :
+                y2 = y2 - (1 / coeff)
+                lst[colonne-(j+positiony-1)][ligne-n2] = 1
+                if y2 >= (1):
+                    n2 = n2 + 1
+                    lst[colonne-(j+positiony-1)][ligne-n2] = 1
+                    y2 = y2 - 1
 
     if coeff > 1 :
-        n = colonne - positionx
+        n = ligne - positionx
         n2=n
         y = 0
         y2=y
-        for j in range (ligne-positionx+1) :
-            y = y + (1 / coeff)
-            lst[j+positiony-1][n] = 1
-            if y >= 1:
-                n = n - 1
+        for j in range (colonne-positionx+1) :
+            if n>0:
+                y = y + (1 / coeff)
                 lst[j+positiony-1][n] = 1
-                y = y - 1
-        for j in range (ligne-positionx+2) :
-            y2 = y2 - (1 / coeff)
-            lst[ligne-(j+positiony-1)][colonne-n2] = 1
-            if y2 <= (-1):
-                n2 = n2 - 1
-                lst[ligne-(j+positiony-1)][colonne-n2] = 1
-                y2 = y2 + 1
+                if y >= 1:
+                    n = n - 1
+                    lst[j+positiony-1][n] = 1
+                    y = y - 1
+        for j in range (colonne-positionx+2) :
+            if n2>0:
+                y2 = y2 - (1 / coeff)
+                lst[colonne-(j+positiony-1)][ligne-n2] = 1
+                if y2 <= (-1):
+                    n2 = n2 - 1
+                    lst[colonne-(j+positiony-1)][ligne-n2] = 1
+                    y2 = y2 + 1
     if coeff==-1:
         y=positiony
         x=positionx
