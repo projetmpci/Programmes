@@ -1,0 +1,222 @@
+#PROBLEME : NE TRAITE QUE LES MATRICES CARREES
+#(provient d'un problèmre d'indice en fonction de qui est plus grand (solution : fonction min?))
+#Probleme de la limite de droites résolues
+#(le problèmre d'indice est contourné par la distance maximale qu'on a attribué à la vision)
+#Murs ajoutés aléatoirement
+#ligne de vue limitée (je l'ai limitée à 2/5 de min(ligne,colonne) qu'en pensez vous?
+#NOUVEAU PROBLEME : limite de vue CARREE et non circulaire !!!
+#(je vois très mal comment régler ce probleme avec la maniere dont on a codé nos droites)
+#collision des murs non traitées
+#nombre de droites NECESSAIRES non traité
+
+from math import *
+from random import *
+
+def matrice(colonne,ligne):
+    lst = [[0] * ligne for i in range(colonne)]
+    return lst
+
+def mur(lst):
+    colonne = len(lst)
+    ligne = len(lst[1])
+    nb_mur = min(colonne,ligne)
+    for i in range (nb_mur):
+        lst[randrange(colonne)][randrange(ligne)]=2
+    return lst
+
+def affiche_tableau(lst):
+    for i in lst:
+        for j in i:
+            if j==1:
+                print("\033[31m*\033[0m","",end="")
+            elif j==2:
+                print("\033[37m#\033[0m","",end="")
+            elif j=='@':
+                print("\033[32m@\033[0m", "", end="")
+            else :
+                print("\033[30m0\033[0m", "", end="")
+        print()
+
+def remplace(coeff,lst):
+
+    colonne=len(lst)
+    ligne=len(lst[1])
+    positionx=floor(ligne/2)
+    positiony=floor(colonne/2)
+    compteur=0
+    compteur2=0
+    limite=floor(2*min(colonne,ligne)/5)
+
+    if coeff<0  and coeff>(-1):
+        n = positiony
+        n2 = n
+        y = 0
+        y2 = y
+        for j in range (ligne - positionx) :
+            y = y + coeff
+            lst[n][j+positionx-1]=1
+            compteur+=1
+            if compteur>=limite:
+                break
+            if y<=(-1):
+                n=n+1
+                lst[n][j+positionx-1]=1
+                y=y+1
+                compteur += 1
+                if compteur >= limite:
+                    break
+        for j in range (ligne - positionx) :
+            y2 = y2 - coeff
+            lst[colonne-n2][ligne-(j+positionx-1)]=1
+            compteur2 += 1
+            if compteur2 >= limite:
+                break
+            if y2>=(1):
+                n2=n2+1
+                lst[colonne-n2][ligne-(j+positionx-1)]=1
+                y2=y2-1
+                compteur2 += 1
+                if compteur2 >= limite:
+                    break
+
+    if coeff >= 0 and coeff < 1 :
+        n = colonne - positiony
+        n2 = n
+        y = 0
+        y2 = y
+        for j in range (ligne - positionx) :
+            y = y + coeff
+            lst[n][j+positionx-1] = 1
+            compteur += 1
+            if compteur >= limite:
+                break
+            if y >= (1) :
+                n = n-1
+                lst[n][j+positionx-1] = 1
+                y = y - 1
+                compteur += 1
+                if compteur >= limite:
+                    break
+        for j in range (ligne - positionx) :
+            y2 = y2 - coeff
+            lst[colonne - n2][ligne-(j+positionx-1)] = 1
+            compteur2 += 1
+            if compteur2 >= limite:
+                break
+            if y2 <= (-1) :
+                n2 = n2-1
+                lst[colonne-n2][ligne-(j+positionx-1)] = 1
+                y2 = y2 + 1
+                compteur2 += 1
+                if compteur2 >= limite:
+                    break
+
+    if coeff < (-1) :
+        n = positionx
+        n2 = n
+        y = 0
+        y2 = y
+        for j in range(ligne-positionx) :
+            y = y + (1 / coeff)
+            lst[j+positiony-1][n] = 1
+            compteur += 1
+            if compteur >= limite:
+                break
+            if y <= (-1):
+                n = n + 1
+                lst[j+positiony-1][n] = 1
+                y = y + 1
+                compteur += 1
+                if compteur >= limite:
+                    break
+        for j in range(ligne-positionx) :
+            y2 = y2 - (1 / coeff)
+            lst[ligne-(j+positiony-1)][colonne-n2] = 1
+            compteur2 += 1
+            if compteur2 >= limite:
+                break
+            if y2 >= (1):
+                n2 = n2 + 1
+                lst[ligne-(j+positiony-1)][colonne-n2] = 1
+                y2 = y2 - 1
+                compteur2 += 1
+                if compteur2 >= limite:
+                    break
+
+    if coeff > 1 :
+        n = colonne - positionx
+        n2=n
+        y = 0
+        y2=y
+        for j in range (ligne-positionx) :
+            y = y + (1 / coeff)
+            lst[j+positiony-1][n] = 1
+            compteur += 1
+            if compteur >= limite:
+                break
+            if y >= 1:
+                n = n - 1
+                lst[j+positiony-1][n] = 1
+                y = y - 1
+                compteur += 1
+                if compteur >= limite:
+                    break
+        for j in range (ligne-positionx) :
+            y2 = y2 - (1 / coeff)
+            lst[ligne-(j+positiony-1)][colonne-n2] = 1
+            compteur2 += 1
+            if compteur2 >= limite:
+                break
+            if y2 <= (-1):
+                n2 = n2 - 1
+                lst[ligne-(j+positiony-1)][colonne-n2] = 1
+                y2 = y2 + 1
+                compteur2 += 1
+                if compteur2 >= limite:
+                    break
+
+    if coeff==-1:
+        y=positiony
+        x=positionx
+        for i in range(min(x,y)):
+            lst[y-i][x-i]=1
+            compteur += 1
+            if compteur >= limite:
+                break
+        for i in range(min(x,y)):
+            lst[y+i][x+i]=1
+            compteur2 += 1
+            if compteur2 >= limite:
+                break
+
+    if coeff==1:
+        y=positiony
+        x=positionx
+        for i in range(min(x,y)):
+            lst[y-i][x+i]=1
+            compteur += 1
+            if compteur >= limite:
+                break
+        for i in range(min(x,y)):
+            lst[y+i][x-i]=1
+            compteur2 += 1
+            if compteur2 >= limite:
+                break
+
+    lst[positiony][positionx]='@'
+    return lst
+
+def ligne_de_vue(lst,nb_de_droite):
+    for i in range (nb_de_droite):
+        lst=remplace(tan(0.01745*(90-i*(180/(nb_de_droite)))),lst)
+    return lst
+
+
+colonne=50
+ligne=50
+nb_de_droite=75
+
+M = mur(matrice(colonne,ligne))
+L = ligne_de_vue(M,nb_de_droite)
+
+affiche_tableau(L)
