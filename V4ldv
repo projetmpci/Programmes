@@ -272,8 +272,8 @@ def ligne_de_vue(lst,nb_de_droite):
     return lst
 
 
-colonne=50
-ligne=50
+colonne=80
+ligne=80
 
 M = mur(matrice(colonne,ligne))
 L = ligne_de_vue(M,nb_de_droite(M))
