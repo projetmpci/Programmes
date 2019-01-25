@@ -1,0 +1,308 @@
+from math import *
+from random import *
+
+
+def matrice(colonne,ligne):
+    lst = [[0] * ligne for i in range(colonne)]
+    return lst
+
+
+def affiche_tableau(lst):
+    for i in lst:
+        for j in i:
+            if j==1:
+                print("\033[31m*\033[0m","",end="")
+            elif j==2:
+                print("\033[37m#\033[0m","",end="")
+            elif j=='@':
+                print("\033[32m@\033[0m", "", end="")
+            else :
+                print("\033[30m0\033[0m", "", end="")
+        print()
+
+
+def placer_mur(direction, longueur, position_x_départ, position_y_départ, matrice):
+    """g pour direction gauche, d pour direction droite, h pour haut et b pour bas"""
+    if direction == "d" :
+        for i in range(longueur):
+            matrice[position_y_départ][position_x_départ + i] = 2
+    elif direction == "g" :
+        for i in range(longueur):
+            matrice[position_y_départ][position_x_départ - i] = 2
+    elif direction == "h" :
+        for i in range(longueur):
+            matrice[position_y_départ - i][position_x_départ] = 2
+    elif direction == "b" :
+        for i in range(longueur):
+            matrice[position_y_départ + i][position_x_départ] = 2
+
+
+def placer_rectangle(hauteur, largeur, position_x_départ, position_y_départ, matrice):
+    placer_mur("b", hauteur, position_x_départ, position_y_départ, matrice)
+    placer_mur("b", hauteur+1, position_x_départ + largeur, position_y_départ, matrice)
+    placer_mur("d", largeur, position_x_départ, position_y_départ, matrice)
+    placer_mur("d", largeur, position_x_départ, position_y_départ + hauteur, matrice)
+
+
+
+
+
+
+def nb_de_droite(lst):
+    colonne = len(lst)
+    ligne = len(lst[1])
+    return floor(3*min(colonne,ligne)/2)
+
+
+def remplace(coeff,lst):
+
+    colonne=len(lst)
+    ligne=len(lst[1])
+    positionx=floor(ligne/2)
+    positiony=floor(colonne/2)
+    compteur = 0
+    compteur2 = 0
+    distancey = 0
+    distancey2 = 0
+    distancex = 0
+    distancex2 = 0
+    limite=floor(2*min(colonne,ligne)/5)
+
+    if coeff<0  and coeff>(-1):
+
+        n = positiony
+        n2 = n
+        y = 0
+        y2 = y
+        for j in range (ligne - positionx) :
+            y = y + coeff
+            if lst[n][j+positionx-1] != 2 :
+                lst[n][j+positionx-1]=1
+                distancex += 1
+                if sqrt((distancex ** 2) + (distancey ** 2)) >= limite:
+                    break
+                if y <= (-1):
+                    n = n+1
+                    if lst[n][j+positionx-1] != 2 :
+                        lst[n][j+positionx-1]=1
+                        y=y+1
+                        distancey += 1
+                        if sqrt((distancex ** 2) + (distancey ** 2)) >= limite:
+                            break
+                    else:
+                        break
+            else :
+                break
+        for j in range (ligne - positionx) :
+            y2 = y2 - coeff
+            if lst[colonne-n2][ligne-(j+positionx-1)]!=2:
+                lst[colonne-n2][ligne-(j+positionx-1)]=1
+                distancex2 += 1
+                if sqrt((distancex2 ** 2) + (distancey2 ** 2)) >= limite:
+                    break
+                if y2 >= 1:
+                    n2 = n2 + 1
+                    if lst[colonne-n2][ligne-(j+positionx-1)] !=2:
+                        lst[colonne-n2][ligne-(j+positionx-1)]=1
+                        y2 = y2 - 1
+                        distancey2 += 1
+                        if sqrt((distancex2 ** 2) + (distancey2 ** 2)) >= limite:
+                            break
+                    else:
+                        break
+            else:
+                break
+
+    if coeff >= 0 and coeff < 1 :
+
+        n = colonne - positiony
+        n2 = n
+        y = 0
+        y2 = y
+        for j in range (ligne - positionx) :
+            y = y + coeff
+            if lst[n][j+positionx-1] != 2 :
+                lst[n][j+positionx-1] = 1
+                distancex += 1
+                if sqrt((distancex ** 2) + (distancey ** 2)) >= limite:
+                    break
+                if y >= (1) :
+                    n = n-1
+                    if lst[n][j+positionx-1] != 2 :
+                        lst[n][j+positionx-1] = 1
+                        y = y - 1
+                        distancey += 1
+                        if sqrt((distancex ** 2) + (distancey ** 2)) >= limite:
+                            break
+                    else :
+                        break
+            else :
+                break
+        for j in range (ligne - positionx) :
+            y2 = y2 - coeff
+            if lst[colonne - n2][ligne-(j+positionx-1)] != 2 :
+                lst[colonne - n2][ligne-(j+positionx-1)] = 1
+                distancex2 += 1
+                if sqrt((distancex2 ** 2) + (distancey2 ** 2)) >= limite:
+                    break
+                if y2 <= (-1) :
+                    n2 = n2-1
+                    if lst[colonne - n2][ligne-(j+positionx-1)] != 2 :
+                        lst[colonne-n2][ligne-(j+positionx-1)] = 1
+                        y2 = y2 + 1
+                        distancey2 += 1
+                        if sqrt((distancex2 ** 2) + (distancey2 ** 2)) >= limite:
+                            break
+                    else :
+                        break
+            else :
+                break
+
+    if coeff < (-1) :
+        n = positionx
+        n2 = n
+        y = 0
+        y2 = y
+        for j in range(ligne-positionx) :
+            y = y + (1 / coeff)
+            if lst[j+positiony-1][n] != 2 :
+                lst[j+positiony-1][n] = 1
+                distancey += 1
+                if sqrt((distancex ** 2) + (distancey ** 2)) >= limite:
+                    break
+                if y <= (-1):
+                    n = n + 1
+                    if lst[j+positiony-1][n] !=2 :
+                        lst[j+positiony-1][n] = 1
+                        y = y + 1
+                        distancex += 1
+                        if sqrt((distancex ** 2) + (distancey ** 2)) >= limite:
+                            break
+                    else :
+                        break
+            else :
+                break
+
+        for j in range(ligne-positionx) :
+            y2 = y2 - (1 / coeff)
+            if lst[ligne-(j+positiony-1)][colonne-n2] !=2 :
+                lst[ligne-(j+positiony-1)][colonne-n2] = 1
+                distancey2 += 1
+                if sqrt((distancex2 ** 2) + (distancey2 ** 2)) >= limite:
+                    break
+                if y2 >= (1):
+                    n2 = n2 + 1
+                    if lst[ligne-(j+positiony-1)][colonne-n2] != 2 :
+                        lst[ligne-(j+positiony-1)][colonne-n2] = 1
+                        y2 = y2 - 1
+                        distancex2 += 1
+                        if sqrt((distancex2 ** 2) + (distancey2 ** 2)) >= limite:
+                            break
+                    else :
+                        break
+            else :
+                break
+
+    if coeff > 1 :
+
+        n = colonne - positionx
+        n2=n
+        y = 0
+        y2=y
+        for j in range (ligne-positionx) :
+            y = y + (1 / coeff)
+            if lst[j+positiony-1][n] != 2:
+                lst[j+positiony-1][n] = 1
+                distancey += 1
+                if sqrt((distancex ** 2) + (distancey ** 2)) >= limite:
+                    break
+                if y >= 1:
+                    n = n - 1
+                    if lst[j+positiony-1][n] != 2 :
+                        lst[j+positiony-1][n] = 1
+                        y = y - 1
+                        distancex += 1
+                        if sqrt((distancex ** 2) + (distancey ** 2)) >= limite:
+                            break
+                    else :
+                        break
+            else :
+                break
+        for j in range (ligne-positionx) :
+            y2 = y2 - (1 / coeff)
+            if lst[ligne-(j+positiony-1)][colonne-n2] !=2 :
+                lst[ligne-(j+positiony-1)][colonne-n2] = 1
+                distancey2 += 1
+                if sqrt((distancex2 ** 2) + (distancey2 ** 2)) >= limite:
+                    break
+                if y2 <= (-1):
+                    n2 = n2 - 1
+                    if lst[ligne-(j+positiony-1)][colonne-n2] != 2 :
+                        lst[ligne-(j+positiony-1)][colonne-n2] = 1
+                        y2 = y2 + 1
+                        distancex2 += 1
+                        if sqrt((distancex2 ** 2) + (distancey2 ** 2)) >= limite:
+                            break
+                    else :
+                        break
+            else :
+                break
+
+    if coeff==-1:
+        y=positiony
+        x=positionx
+        for i in range(min(x,y)):
+            if lst[y-i][x-i] != 2 :
+                lst[y-i][x-i]=1
+                compteur += 1
+                if compteur >= limite:
+                    break
+            else :
+                break
+        for i in range(min(x,y)):
+            if lst[y+i][x+i] != 2 :
+                lst[y+i][x+i]=1
+                compteur2 += 1
+                if compteur2 >= limite:
+                    break
+            else :
+                break
+
+    if coeff==1:
+        y=positiony
+        x=positionx
+        for i in range(min(x,y)):
+            if lst[y-i][x+i] != 2 :
+                lst[y-i][x+i]=1
+                compteur += 1
+                if compteur >= limite:
+                    break
+            else :
+                break
+        for i in range(min(x,y)):
+            if lst[y+i][x-i] != 2 :
+                lst[y+i][x-i]=1
+                compteur2 += 1
+                if compteur2 >= limite:
+                    break
+            else :
+                break
+
+    lst[positiony][positionx]='@'
+    return lst
+
+def ligne_de_vue(lst,nb_de_droite):
+    for i in range (nb_de_droite):
+        lst=remplace(tan(0.01745*(90-i*(180/(nb_de_droite)))),lst)
+    return lst
+
+
+colonne = 50
+ligne = 50
+board = matrice(colonne, ligne)
+
+board1 = ligne_de_vue(board, 100)
+
+
+
+affiche_tableau(board)
