@@ -15,7 +15,8 @@ from math import exp
 def line_first_octant(start, end):
     """calcul les pixels par lesquel la droite reliant start: (x1, x2) et end: (y1, y2) passe
     On considère que le coefficient directeur de la droite est compris entre 0 et 1, que x1 < x2 et y1 < y2
-    Retourne une liste de coordonnées de pixels"""
+    Retourne une liste de coordonnées de pixels, complexité en O(n) où n est la différence entre les coordonnées 
+    sur l'axe (Ox) des deux points"""
     x1, y1 = start
     x2, y2 = end
     dx = x2 - x1
@@ -53,7 +54,7 @@ def compute_fog(f, i, j):
 def line_of_sight(start, end, board, limit):
     """calcul les pixels par lesquel la droite reliant start: (x1, x2) et end: (y1, y2) passe,
     Pour toute valeur de coefficient directeur et pour tous points start et end
-    Retourne une liste de coordonnées de pixels"""
+    Retourne une liste de coordonnées de pixels la complexité est en O(n) car on a deéux boucles for non-imbriquées"""
     #Dans ce programme, on parle d'octants, on prendra pour octant1 les droites de coefficient directeur compris entre
     #O et 1 et on tournera ensuite dans le sens trigonométrique pour les numéro des autres octants.
     x1, y1 = start
