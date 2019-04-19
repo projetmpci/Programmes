@@ -11,18 +11,20 @@ def calcule_produit_scalaire(vecteur1, vecteur2):
 
 
 def calcule_vecteurs_triangle(triangle):
-    d = dict()
+    """crée un dictionnaire qui associe à chaque point du triangle (clef) le vecteur le reliant au point suivant (valeur)"""
+    # pour avoir un point et le vecteur associé pour pouvoir calculer l'intersection
+    dico_point_vecteur = dict()
     vecteur1 = calcule_vecteur(triangle[0], triangle[1])
-    d[triangle[0]] = vecteur1
+    dico_point_vecteur[triangle[0]] = vecteur1
     vecteur2 = calcule_vecteur(triangle[1], triangle[2])
-    d[triangle[1]] = vecteur2
+    dico_point_vecteur[triangle[1]] = vecteur2
     vecteur3 = calcule_vecteur(triangle[2], triangle[0])
-    d[triangle[2]] = vecteur3
-    return d
+    dico_point_vecteur[triangle[2]] = vecteur3
+    return dico_point_vecteur
 
 
 def calcule_ensemble_des_cotes_des_triangles(liste_de_triangle):
-    """calcule les vecteurs de côtés de tous les triangles d'une liste et retourne un dico avec unpoint comme clef et le vecteur comme valeur"""
+    """calcule les vecteurs de côtés de tous les triangles d'une liste et retourne un dico avec un point comme clef et le vecteur comme valeur"""
     dictionnaire_des_vecteurs = dict()
     for i in liste_de_triangle:
         dictionnaire_des_vecteurs_intermediaire = calcule_vecteurs_triangle(i)
